@@ -1,44 +1,50 @@
-let algo,running_algo;
+let algo,runningAlgo;
+let isRunning = false;
 
 let i = 0;
 let highlightNextElement = function () {
   if (i < algo.path.length) {
     algo.path[i].addClass("highlighted");
     i++;
-    running_algo = setTimeout(highlightNextElement, 500);
+    runningAlgo = setTimeout(highlightNextElement, 500);
   }
 };
 
 let j = 0;
 let removeHighlight = function () {
-  if (j < algo.path.length) {
+  while (j < algo.path.length) {
     algo.path[j].removeClass("highlighted");
     j++;
-    setTimeout(removeHighlight);
   }
 };
 
+let stopRunningAlgo = function () {
+  if (isRunning) {
+    j = 0;
+    clearTimeout(runningAlgo);
+    removeHighlight();
+  }
+}
+
 const Dfs = $("#Dfs");
 Dfs.on("click", () => {
+  stopRunningAlgo();
   let dfs = cy.elements().dfs("#n1", function () {}, true);
   algo = dfs;
   i = 0;
-  highlightNextElement();  
+  isRunning = true;
+  setTimeout(highlightNextElement,500);  
 });
 
 const Bfs = $("#Bfs");
 Bfs.on("click", () => {
+  stopRunningAlgo();
   let bfs = cy.elements().bfs("#n1", function () {}, true);
-  cy.layout.directed=true;
   algo = bfs;
   i = 0;
-  cy.layout.directed = true;
-  highlightNextElement();
+  isRunning = true;
+  setTimeout(highlightNextElement,500);
 })
 
 const Reset = $("#Reset");
-Reset.on("click", () => {
-  j = 0;
-  clearTimeout(running_algo);
-  removeHighlight();  
-});
+Reset.on("click",stopRunningAlgo);
