@@ -1,7 +1,15 @@
 body { 
-    font: 14px helvetica neue, helvetica, arial, sans-serif;
-  }
-  
+  font: 14px helvetica neue, helvetica, arial, sans-serif;
+}
+h1 {
+  letter-spacing: 1px;
+  font-size: 2.5em;
+}
+.centerAlign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 #cy {
   height: 100%;
   width: 100%;
@@ -9,4 +17,20 @@ body {
   left: 0;
   top: 0;
 }
-
+button {
+  margin: 5px 5px 0;
+  padding: 10px 15px;
+  font-size: 1.5em;
+  font-weight: 500;
+  letter-spacing: 2px;
+  border-radius: 1em;
+  background-color: white;
+  color: #3f3f3f;
+  border: 2px solid #3f3f3f;
+}
+button:hover {
+  transition: 0.25s;
+  padding: 12px 17px;
+  background-color: #3f3f3f;
+  color: white;
+}
