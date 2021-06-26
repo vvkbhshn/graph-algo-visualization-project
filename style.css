@@ -11,11 +11,10 @@ h1 {
     justify-content: center;
 }
 #cy {
-    height: 80vh;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
+  height: 80vh;
+  width: 100%;
+  left: 0;
+  top: 0;
 }
 button {
     margin: 5px 5px 0;
@@ -29,8 +28,8 @@ button {
     border: 2px solid #3f3f3f;
 }
 button:hover {
-    transition: 0.25s;
-    padding: 12px 17px;
-    background-color: #3f3f3f;
-    color: white;
+  transition: 0.25s;
+  padding: 12px 17px;
+  background-color: #3f3f3f;
+  color: white;
 }
