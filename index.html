@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.19.0/cytoscape.min.js"></script>
+    <!--CDN cytoscape-dagre layout -->
+    <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
+    <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
+    <!--CDN cytoscape-klay layout -->
+    <script src="https://unpkg.com/klayjs@0.4.1/klay.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-klay@3.1.4/cytoscape-klay.js"></script>
+
 </head>
 <body>
     <div id="cy">
@@ -15,21 +22,21 @@
             <form action="/">
                 <div>
                     <label for="num-of-nodes">Enter the no. of nodes: </label>
-                    <input type="number" id="num-of-nodes" name="num-of-nodes" min="1" max="30"><br><br>     
+                    <input type="number" id="num-of-nodes" name="num-of-nodes" min="1" max="100"><br><br>     
                 </div>
                 <div>
                     <label for="algo">Algorithm: </label> 
-                    <select name="algo" id="algo">
+                    <select name="algo" id="algo" style="max-width: 90%;">
                         <option value="dfs">DFS</option>
                         <option value="bfs">BFS</option>
                     </select><br><br>
                 </div>
                 <div>
                     <span>Type of edges: </span>
+                    <input type="radio" id="undirected" name="r" value="undirected" checked="checked">
+                    <label for="undirected">Undirected</label>
                     <input type="radio" id="directed" name="r" value="directed">
                     <label for="directed">Directed</label>
-                    <input type="radio" id="undirected" name="r" value="undirected">
-                    <label for="undirected">Undirected</label>
                     <br><br>
                 </div>
                 <input type="submit" id="visualize" value="Visualize">
@@ -38,4 +45,4 @@
     </div>
     <script src="index.js"></script> 
 </body>
-</html>
+</html> 

@@ -12,15 +12,6 @@ $("form").on("submit", (e) => {
         boxSelectionEnabled: false,
         autounselectify: true,
     })
-
-    //Add data structures to deal with graph algos
-    let adj = new Array(101);
-    let vis = new Array(101);
-    for (let i=0; i<101; i++) {
-        vis[i] = false;
-        adj[i] = new Array(101);
-    }
-    for (let i=0; i<101; i++) for (let j=0; j<101; j++) adj[i][j]=0;
     
     //Add nodes
     for(let i=1; i<=numOfNodes; i++){
@@ -31,97 +22,81 @@ $("form").on("submit", (e) => {
     }
 
     //Add edges
-    for(let i=1; i<=numOfNodes; i++){
-        let randomNum = Math.floor(Math.random()*numOfNodes)+1;
-        let targetNode = randomNum;
-        if(targetNode===i){
-            if(numOfNodes===1) targetNode=1;
-            else if(i===1) targetNode++;
-            else targetNode--;
-        }
-        adj[i][targetNode]=1;
-        adj[targetNode][i]=1;
-        cy.add({
-            group: "edges",
-            data: {id: "e"+(i-1), source: "n"+i, target: "n"+targetNode},
-        });
+    let nodes = [];
+    nodes.push(1);
+    for(let i=2;i<=numOfNodes;i++){
+        let randomNode = Math.floor(Math.random()*nodes.length)+1;
+        nodes.push(i);
+        cy.add({group: "edges", data: {id: "e"+i, source: "n"+randomNode, target: "n"+i}});
     }
-   
+    let num = numOfNodes/4;
+    for(let i=0;i<=num;i++){
+        let num1 = Math.floor(Math.random()*numOfNodes)+1;
+        let num2 = Math.floor(Math.random()*numOfNodes)+1;
+        if(num1!=num2) cy.add({group: "edges", data: {id: "e"+num1+"-"+num2, source: "n"+num1, target: "n"+num2}});
+    }
 
     //Add style
     cy.style()
-        .selector("node").style({
-            content: "data(label)",
-            "background-color": "#5b54fa",
+        .selector("node")
+        .style({
+        content: "data(label)",
+        "background-color": "#5B54FA",
+        // 'text-opacity': 0.5,
+        'text-valign': 'center',
+        'text-halign': 'center',
         })
-        .selector("edge").style({
-            "curve-style": "bezier",
-            "taget-arrow-shape": "triangle",
-            "target-arrow-color": "#ffa400",
-            width: 4,
+        .selector("edge")
+        .style({
+        "curve-style": typeOfEdge==="directed" ? "bezier" : "haystack",
+        "target-arrow-shape": "triangle",
+        width: 4,
+        "line-color": "#ddd",
+        "target-arrow-color": "#ddd",
         })
-        .selector(".highlighted").style({
-            "background-color": "#ffd51b",
-            "line-color": "#ffd51b",
-            "target-arrow-color": "#ffaf1b",
-            "transition-property": "background-color,line-color,target-arrow-color",
-            "transition-duration": "0.5s",
-        });   
+        .selector(".highlighted")
+        .style({
+        "background-color": "rgb(255, 213, 27)",
+        "line-color": "rgb(255, 175, 27)",
+        "target-arrow-color": "rgb(255, 175, 27)",
+        "transition-property": "background-color, line-color,  target-arrow-color",
+        "transition-duration": "0.5s",
+        }); 
 
     //Add layout    
     let layout = cy.layout({
-        name: "cose",
-        // directed: true,
-        directed: (typeOfEdge=="directed" ? true : false),
+        name: "dagre", // name: "klay" (for horizontal edges), "dagre" (for vertical edges)
         roots: "#n1",
         padding: 10,    
     })
     layout.run();
-    // cy.zoomingEnabled( false );
+    // cy.panningEnabled( false );
 
 
-    //Handle algorithms   
-    let path = []; //keep track of visited nodes in order
-
+    //Add algorithms   
+    let algo;
     let i = 0;
     let highlightNextElement = function () {
-        if(i < path.length) {
-            cy.$id("n"+path[i]).style({"background-color": "#ffd51b"});
-            i++;
-            setTimeout(highlightNextElement, 500);
+        if (i < algo.path.length) {
+          algo.path[i].addClass("highlighted");
+          i++;
+          setTimeout(highlightNextElement, 500);
         }
-    }
+    };
 
     if(chosenAlgo==="dfs") {
-        let stack = [];
-        stack.push(1);
-        while(stack.length){
-            let node = stack.pop();
-            if(!vis[node]) path.push(node);
-            vis[node] = true;
-            for(let i=1; i<=numOfNodes; i++) {
-                if(!vis[i] && adj[node][i]===1) {
-                    stack.push(i);
-                }
-            }
-        };
-        setTimeout(highlightNextElement, 500);
+        algo = cy.elements().dfs({
+            roots: "#n1",
+            directed: typeOfEdge==="directed" ? true : false
+        });
+        setTimeout(highlightNextElement,500);
     }
+
     else if(chosenAlgo==="bfs") {
-        let queue = [];
-        vis[1]=true;
-        queue.push(1);
-        path.push(1);
-        while(queue.length){
-            let node = queue.shift();
-            for (let i=1; i<=numOfNodes; i++) {
-                if( adj[node][i]===1 && !vis[i]) {
-                    vis[node]=true;
-                    queue.push(i);
-                    path.push(i);
-                };
-            };
-        };
-        setTimeout(highlightNextElement, 500);
-    }    
-})
+        algo = cy.elements().bfs({
+            roots: "#n1",
+            directed: typeOfEdge==="directed" ? true : false
+        });
+        setTimeout(highlightNextElement,500);
+    }
+});    
