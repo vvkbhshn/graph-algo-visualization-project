@@ -12,6 +12,15 @@ $("form").on("submit", (e) => {
         boxSelectionEnabled: false,
         autounselectify: true,
     })
+
+    //Add data structures to deal with graph algos
+    let adj = new Array(101);
+    let vis = new Array(101);
+    for (let i=0; i<101; i++) {
+        vis[i] = false;
+        adj[i] = new Array(101);
+    }
+    for (let i=0; i<101; i++) for (let j=0; j<101; j++) adj[i][j]=0;
     
     //Add nodes
     for(let i=1; i<=numOfNodes; i++){
@@ -30,12 +39,14 @@ $("form").on("submit", (e) => {
             else if(i===1) targetNode++;
             else targetNode--;
         }
+        adj[i][targetNode]=1;
+        adj[targetNode][i]=1;
         cy.add({
             group: "edges",
             data: {id: "e"+(i-1), source: "n"+i, target: "n"+targetNode},
         });
     }
-    
+   
 
     //Add style
     cy.style()
@@ -60,92 +71,57 @@ $("form").on("submit", (e) => {
     //Add layout    
     let layout = cy.layout({
         name: "cose",
-        directed: true,
-        // directed: (typeOfEdge=="directed" ? true : false),
+        // directed: true,
+        directed: (typeOfEdge=="directed" ? true : false),
         roots: "#n1",
         padding: 10,    
     })
     layout.run();
+    // cy.zoomingEnabled( false );
 
 
-    //Handle algorithms
-    let i = 0, algo;
-    if(chosenAlgo==="bfs") algo = cy.elements().bfs("#n1", function() {}, true);
-    else if(chosenAlgo==="dfs") algo = cy.elements().dfs("#n1", function() {}, true);
+    //Handle algorithms   
+    let path = []; //keep track of visited nodes in order
+
+    let i = 0;
     let highlightNextElement = function () {
-        if (i < algo.path.length) {
-            algo.path[i].addClass("highlighted");
+        if(i < path.length) {
+            cy.$id("n"+path[i]).style({"background-color": "#ffd51b"});
             i++;
             setTimeout(highlightNextElement, 500);
-            console.log(algo.path[i]);
         }
-    };
-    setTimeout(highlightNextElement,500);
-    console.log(cy.nodes());
+    }
 
-    
+    if(chosenAlgo==="dfs") {
+        let stack = [];
+        stack.push(1);
+        while(stack.length){
+            let node = stack.pop();
+            if(!vis[node]) path.push(node);
+            vis[node] = true;
+            for(let i=1; i<=numOfNodes; i++) {
+                if(!vis[i] && adj[node][i]===1) {
+                    stack.push(i);
+                }
+            }
+        };
+        setTimeout(highlightNextElement, 500);
+    }
+    else if(chosenAlgo==="bfs") {
+        let queue = [];
+        vis[1]=true;
+        queue.push(1);
+        path.push(1);
+        while(queue.length){
+            let node = queue.shift();
+            for (let i=1; i<=numOfNodes; i++) {
+                if( adj[node][i]===1 && !vis[i]) {
+                    vis[node]=true;
+                    queue.push(i);
+                    path.push(i);
+                };
+            };
+        };
+        setTimeout(highlightNextElement, 500);
+    }    
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let edgeDetails = $("#edge-details");
-// let addMoreEdges = $("#add-more-edges");
-// addMoreEdges.on("click", () => {
-//     console.log("button clicked");
-//     let newSourceNode = document.createElement("input");
-//     newSourceNode.setAttribute("type","number");
-//     newSourceNode.setAttribute("name","source[]");
-//     newSourceNode.setAttribute("class","edge-details");
-//     newSourceNode.setAttribute("placeholder","source node");
-//     edgeDetails.append(newSourceNode);
-
-//     let newTargetNode = document.createElement("input");
-//     newTargetNode.setAttribute("type","number");
-//     newTargetNode.setAttribute("name","target[]");
-//     newTargetNode.setAttribute("class","edge-details");
-//     newTargetNode.setAttribute("placeholder","target node");
-//     edgeDetails.append(newTargetNode);
-
-//     let newWeight = document.createElement("input");
-//     newWeight.setAttribute("type","number");
-//     newWeight.setAttribute("name","weight[]");
-//     newWeight.setAttribute("class","edge-details");
-//     newWeight.setAttribute("placeholder","weight");
-//     // newWeight.setAttribute("value","0");
-//     edgeDetails.append(newWeight);
-
-//     let br = document.createElement("br");
-//     edgeDetails.append(br);
-// })
-
-
-// $("#visualize").on("click",() => {
-
-//     let startNode = $("#start-node").value;
-//     console.log("the start node is "+startNode);
-    
-
-// })
