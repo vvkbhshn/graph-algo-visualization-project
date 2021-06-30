@@ -102,7 +102,7 @@ $("form").on("submit", (e) => {
     cy.style()
         .selector("node").style({
             "content": "data(label)",
-            "background-color": "#5B54FA",
+            "background-color": "#67B7D1",
             'text-halign': 'center',
             'text-valign': 'center',
         })
