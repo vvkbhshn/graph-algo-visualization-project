@@ -362,7 +362,6 @@ $("form").on("submit", (e) => {
         let floydWarshall = cy.elements().floydWarshall({
             // get a track of visited edges
             weight: function(edge) {
-            //   console.log(edge.source().id(), edge.target().id(), edgeWeight[edge.id()]);
               path.push(edge.source().id(),edge.id(),edge.target().id());
               return edgeWeight[edge.id()];
             },
