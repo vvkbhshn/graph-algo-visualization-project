@@ -11,6 +11,7 @@ $("form").on("submit", (e) => {
     isWeighted = $("#weighted").val();
     startNode = $("#start-node").val();
     endNode = $("#end-node").val();
+    timeout = 100;
 
     //Initialise cytoscape
     cy="",
@@ -150,12 +151,12 @@ $("form").on("submit", (e) => {
         if (i < algo.path.length) {
           algo.path[i].addClass("highlighted");
           i++;
-          timer1 = setTimeout(highlightNextElement, 250);
+          timer1 = setTimeout(highlightNextElement, timeout);
         }
     };
 
     if(numOfNodes==1 && chosenAlgo!="dfs" && chosenAlgo!="bfs") {
-        setTimeout(cy.$("#n1").addClass("highlighted"), 1000);
+        setTimeout(cy.$("#n1").addClass("highlighted"), timeout);
         // setTimeout(cy.$("#n1").addClass("shortest-path"), 3000);
     }
 
@@ -164,7 +165,7 @@ $("form").on("submit", (e) => {
             roots: "#n"+startNode,
             directed: isDirected==="directed" ? true : false
         });
-        timer1 = setTimeout(highlightNextElement, 500);
+        timer1 = setTimeout(highlightNextElement, 0);
     }
 
     else if(chosenAlgo==="bfs") {
@@ -172,7 +173,7 @@ $("form").on("submit", (e) => {
             roots: "#n"+startNode,
             directed: isDirected==="directed" ? true : false
         });
-        timer1 = setTimeout(highlightNextElement, 500);
+        timer1 = setTimeout(highlightNextElement, 0);
     }
 
     else if(chosenAlgo==="dijkstra") {
