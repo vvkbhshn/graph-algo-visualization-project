@@ -1,5 +1,5 @@
 let cy = "", timer1, timer2;
-let numOfNodes=0,chosenAlgo=0,isDirected="",isWeighted="",startNode=0,endNode=0;
+let numOfNodes=0,chosenAlgo=0,isDirected="",isWeighted="",startNode=0,endNode=0,timeout = 100;
 let highlightNextElement = function () {};
 let edges = [];
 
@@ -11,7 +11,7 @@ $("form").on("submit", (e) => {
     isWeighted = $("#weighted").val();
     startNode = $("#start-node").val();
     endNode = $("#end-node").val();
-    timeout = 100;
+    timeout = 1 / $("#speed").val();
 
     //Initialise cytoscape
     cy="",
