@@ -1,1 +1,1 @@
-# graph-algo-visualization-project
+# graph algo visualization project
