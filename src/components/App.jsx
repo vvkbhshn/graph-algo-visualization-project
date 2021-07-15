@@ -5,9 +5,7 @@ import Graph from "./Graph";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../style.css";
 
-function App() {
-  
-
+function App() { 
   return (
     <div>
       <Heading />
