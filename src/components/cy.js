@@ -4,12 +4,6 @@ cytoscape.use(dagre);
 
 function cy(data) {
   const { numOfNodes, isDirected, isWeighted, chosenAlgo, startNode, endNode } = data;
-  // console.log(numOfNodes);
-  // console.log(isDirected);
-  // console.log(isWeighted);
-  // console.log(chosenAlgo);
-  // console.log(startNode);
-  // console.log(endNode);
 
   let nodeArray = [], edgeArray = [];
   let nodes = [], edges = [];
