@@ -16,10 +16,12 @@ function Form() {
       if ((endNode.value === "" || endNode.value === null) && algo.value !== "dfs" && algo.value !== "bfs") {
         alert("Please enter the value of End node for path finding algorithms.");
         return false;
-      } else if (start > total || end > total) {
+      } 
+      else if (start > total || end > total) {
         alert("Choose Start node & End node from 1 to (no. of nodes).");
         return false;
-      } else if (end > 0 && end < start && directed.value === "directed") {
+      } 
+      else if (end > 0 && end < start && directed.value === "directed") {
         alert("For directed graphs, please choose an End node which is greater than Start node.");
         return false;
       }
