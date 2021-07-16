@@ -27,6 +27,7 @@ function Form() {
       }
       return true;
     };
+  
 
     if (!validateForm()) window.location.reload();
     else {
