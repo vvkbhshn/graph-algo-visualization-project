@@ -1,0 +1,18 @@
+body { 
+  font: 14px helvetica neue, helvetica, arial, sans-serif;
+}
+
+h1 {
+  padding: 2% 0%;
+  text-align: center;
+  letter-spacing: 1px;
+  font-size: 2.5em;
+}
+
+#cy {
+  height: 80vh;
+  width: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 999;
+}

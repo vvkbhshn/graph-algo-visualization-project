@@ -1,18 +1,35 @@
 import cytoscape from "cytoscape";
 import dagre from "cytoscape-dagre";
+import dfs from "../algo/dfs";
+import bfs from "../algo/bfs";
+
 cytoscape.use(dagre);
+let ds = { stack: [], queue: [] };
 
 function cy(data) {
-  const { numOfNodes, isDirected, isWeighted, chosenAlgo, startNode, endNode } = data;
-  // console.log(numOfNodes);
-  // console.log(isDirected);
-  // console.log(isWeighted);
-  // console.log(chosenAlgo);
-  // console.log(startNode);
-  // console.log(endNode);
+  const {
+    numOfNodes,
+    isDirected,
+    isWeighted,
+    chosenAlgo,
+    startNode,
+    endNode
+  } = data;
 
-  let nodeArray = [], edgeArray = [];
-  let nodes = [], edges = [];
+  ds.startNode = startNode;
+
+  let nodeArray = [];
+  let edgeArray = [];
+  let nodes = [];
+  let edges = [];
+  let adj = new Array(101);
+  for (let i = 0; i < 101; i++) {
+    adj[i] = new Array(101);
+  }
+  for (let i = 0; i < 101; i++) {
+    for (let j = 0; j < 101; j++) adj[i][j] = 0;
+  }
+
   let highlightNextElement = function () {};
 
   //Add nodes
@@ -36,9 +53,27 @@ function cy(data) {
         id: ID,
         source: "n" + randomNode,
         target: "n" + i,
-        weight: isWeighted === "weighted" ? randomWeight : 1,
-      },
+        weight: isWeighted === "weighted" ? randomWeight : 1
+      }
     });
+
+    if (isDirected === "undirected") {
+      let ID2 = "e" + i + "-" + randomNode;
+      edgeArray.push({
+        group: "edges",
+        data: {
+          id: ID2,
+          source: "n" + i,
+          target: "n" + randomNode,
+          weight: isWeighted === "weighted" ? randomWeight : 1
+        }
+      });
+      adj[i][randomNode] = isWeighted === "weighted" ? randomWeight : 1;
+      edgeWeight[ID2] = randomWeight;
+    }
+
+    adj[randomNode][i] = isWeighted === "weighted" ? randomWeight : 1;
+    // if (isDirected === "undirected") adj[i][randomNode] = (isWeighted === "weighted") ? randomWeight : 1;
     edgeWeight[ID] = randomWeight;
     edges.push(ID);
   }
@@ -62,13 +97,17 @@ function cy(data) {
           weight:
             isWeighted === "weighted"
               ? Math.floor(Math.random() * numOfNodes) + 1
-              : 1,
-        },
+              : 1
+        }
       });
+      adj[num1][num2] = isWeighted === "weighted" ? randomWeight : 1;
+      if (isDirected === "undirected")
+        adj[num2][num1] = isWeighted === "weighted" ? randomWeight : 1;
     }
     edgeWeight[ID] = randomWeight;
     edges.push(ID);
   }
+  data.adj = adj;
 
   //Add style
   let styleArray = [
@@ -78,8 +117,8 @@ function cy(data) {
         content: "data(label)",
         "background-color": "#67b7d1",
         "text-halign": "center",
-        "text-valign": "center",
-      },
+        "text-valign": "center"
+      }
     },
     {
       selector: "edge",
@@ -93,8 +132,8 @@ function cy(data) {
         "target-arrow-shape": "triangle",
         width: 4,
         "line-color": "#ddd",
-        "target-arrow-color": "#ddd",
-      },
+        "target-arrow-color": "#ddd"
+      }
     },
     {
       selector: ".highlighted",
@@ -102,9 +141,10 @@ function cy(data) {
         "background-color": "rgb(255,213,27)",
         "line-color": "rgb(255,175,27)",
         "target-arrow-color": "rgb(255,175,27)",
-        "transition-property": "background-color, line-color, target-arrow-color",
-        "transition-duration": "0.5s",
-      },
+        "transition-property":
+          "background-color, line-color, target-arrow-color",
+        "transition-duration": "0.5s"
+      }
     },
     {
       selector: ".shortest-path",
@@ -112,17 +152,18 @@ function cy(data) {
         "background-color": "#f00",
         "line-color": "#f00",
         "target-arrow-color": "#f00",
-        "transition-property": "background-color, line-color, target-arrow-color",
-        "transition-duration": "0.5s",
-      },
-    },
+        "transition-property":
+          "background-color, line-color, target-arrow-color",
+        "transition-duration": "0.5s"
+      }
+    }
   ];
 
   //Add layout
   let layout = {
     name: "dagre",
     roots: "#n" + startNode,
-    padding: 10,
+    padding: 10
   };
 
   //Initialise Cytoscape
@@ -134,10 +175,10 @@ function cy(data) {
     userPanningEnabled: false, //cannot drag or zoom the graph
     elements: {
       nodes: nodeArray,
-      edges: edgeArray,
+      edges: edgeArray
     },
     style: styleArray,
-    layout: layout,
+    layout: layout
   });
 
   //Add algorithms
@@ -155,17 +196,33 @@ function cy(data) {
     setTimeout(cy.$("#n1").addClass("highlighted"), 1000);
     setTimeout(cy.$("#n1").addClass("shortest-path"), 3000);
   } else if (chosenAlgo === "dfs") {
-    algo = cy.elements().dfs({
-      roots: "#n" + startNode,
-      directed: isDirected === "directed" ? true : false,
-    });
-    setTimeout(highlightNextElement, 500);
+    let order = dfs(data);
+    ds.stack = order;
+    // console.log("cy.js", ds.stack);
+    highlightNextElement = function () {
+      if (i < order.length) {
+        let array = order[i];
+        //EDGES CAN BE HIGHLIGHTED BY KEEPING TRACK OF PREVIOUS NODES (make a prev array to store, probably)
+        if (array[0] !== "push") cy.$("#n" + array[0]).addClass("highlighted");
+        i++;
+        setTimeout(highlightNextElement, 1000);
+      }
+    };
+    setTimeout(highlightNextElement, 1000);
   } else if (chosenAlgo === "bfs") {
-    algo = cy.elements().bfs({
-      roots: "#n" + startNode,
-      directed: isDirected === "directed" ? true : false,
-    });
-    setTimeout(highlightNextElement, 500);
+    let order = bfs(data);
+    ds.queue = order;
+    // console.log("cy.js", ds.queue);
+    highlightNextElement = function () {
+      if (i < order.length) {
+        let array = order[i];
+        if (array[0] !== "push") cy.$("#n" + array[0]).addClass("highlighted");
+        i++;
+        setTimeout(highlightNextElement, 1000);
+      }
+    };
+    setTimeout(highlightNextElement, 1000);
+
   } else if (chosenAlgo === "dijkstra") {
     let path = [];
 
@@ -206,7 +263,7 @@ function cy(data) {
         path.push(edge.source().id(), edge.id(), edge.target().id());
         return edgeWeight[edge.id()];
       },
-      directed: isDirected === "directed" ? true : false,
+      directed: isDirected === "directed" ? true : false
     });
     // console.log(path);
     if (path.length > 0) setTimeout(highlightNextElement, 500);
@@ -259,7 +316,7 @@ function cy(data) {
         path.push(edge.source().id(), edge.id(), edge.target().id());
         return edgeWeight[edge.id()];
       },
-      directed: isDirected === "directed" ? true : false,
+      directed: isDirected === "directed" ? true : false
     });
     // console.log(path);
     setTimeout(highlightNextElement, 500);
@@ -304,7 +361,7 @@ function cy(data) {
         path.push(edge.source().id(), edge.id(), edge.target().id());
         return edgeWeight[edge.id()];
       },
-      directed: isDirected === "directed" ? true : false,
+      directed: isDirected === "directed" ? true : false
     });
     // console.log(path);
     setTimeout(highlightNextElement, 500);
@@ -346,7 +403,7 @@ function cy(data) {
         path.push(edge.source().id(), edge.id(), edge.target().id());
         return edgeWeight[edge.id()];
       },
-      directed: isDirected === "directed" ? true : false,
+      directed: isDirected === "directed" ? true : false
     });
     // console.log(path);
     setTimeout(highlightNextElement, 500);
@@ -354,3 +411,4 @@ function cy(data) {
 }
 
 export default cy;
+export { ds };
