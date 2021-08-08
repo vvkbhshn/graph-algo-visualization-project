@@ -25,10 +25,11 @@ In the next step enter the starting node and if the algorithm is a path finding 
 ![3](https://user-images.githubusercontent.com/66871080/128633922-438a7611-8c6f-4948-a0d3-a8c47d22c91f.png)
 
 The tools used in the project are as follows:-
-Tech Stack: HTMS, CSS, JavaScript, React.
-NPM Library: Cytoscape, Bootstrap, Heap
-Graph Layout: Cytoscape-Dagre
-For displaying Data Structure: React Hooks like useState and useEffect.
+
+Tech Stack: HTMS, CSS, JavaScript, React.\
+NPM Library: Cytoscape, Bootstrap, Heap\
+Graph Layout: Cytoscape-Dagre\
+For displaying Data Structure: React Hooks like useState and useEffect.\
 
 
 This project is a part of IITISoc 21 conducted by Cynaptics IIT Indore which included various Web dev and ML/AI projects done by various IIT Indore students.
