@@ -29,7 +29,7 @@ The tools used in the project are as follows:-
 Tech Stack: HTMS, CSS, JavaScript, React.\
 NPM Library: Cytoscape, Bootstrap, Heap\
 Graph Layout: Cytoscape-Dagre\
-For displaying Data Structure: React Hooks like useState and useEffect.\
+For displaying Data Structure: React Hooks like useState and useEffect.
 
 
 This project is a part of IITISoc 21 conducted by Cynaptics IIT Indore which included various Web dev and ML/AI projects done by various IIT Indore students.
