@@ -10,12 +10,12 @@ The link for website is = https://szisv.csb.app/
 
 At 1st the user needs to enter the number of nodes to be visualized. 
 
-In the 2nd Step choose the type of edges the users want i.e., directed or undirected and whether they want to keep them weighted or unweighted
+In the 2nd Step choose the type of edges the users want i.e., directed or undirected and whether they want to keep them weighted or unweighted.
 
 ![1](https://user-images.githubusercontent.com/66871080/128633847-ced93142-1971-4735-b5ff-a80e0e5d0248.png)
 
 
-In the 3rd Step the users needs to choose the algorithm they want to implement
+In the 3rd Step the users needs to choose the algorithm they want to implement.
 
 ![2](https://user-images.githubusercontent.com/66871080/128633893-c44b7b19-c78a-4904-81a7-b2ca9ffa6b95.png)
 
@@ -32,7 +32,7 @@ Graph Layout: Cytoscape-Dagre\
 For displaying Data Structure: React Hooks like useState and useEffect.
 
 
-This project is a part of IITISoc 21 conducted by Cynaptics IIT Indore which included various Web dev and ML/AI projects done by various IIT Indore students.
+This project is a part of IITISoc 21 conducted by Cynaptics Club and Programming Club at IIT Indore which included various other Web dev and ML/AI projects done by IIT Indore students.
 The group which worked on this project is :- Vivek Bhushan, Indira Medepalli, Tushar Tiwari & Rajat Kushwaha.
 
 
