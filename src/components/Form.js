@@ -15,7 +15,7 @@ function Form(props) {
             id="num-of-nodes"
             name="numOfNodes"
             min="1"
-            max="100"
+            max="30"
             required
           />
           <br />
