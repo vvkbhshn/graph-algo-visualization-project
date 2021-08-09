@@ -28,8 +28,8 @@ function Form(props) {
               <select name="directed" className="form-control" id="directed">
                 <option value="directed">Directed</option>
                 <option value="undirected">Undirected</option>
-              </select>{" "}
-              &nbsp;
+              </select>
+              <br />
             </div>
             <div className="col">
               <select name="weighted" className="form-control" id="weighted">
