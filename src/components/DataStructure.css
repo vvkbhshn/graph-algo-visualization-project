@@ -1,0 +1,38 @@
+.unit {
+  font-size: 1.5em;
+  text-align: center;
+  padding: 0.5em;
+  margin: 5px;
+  border-radius: 5px;
+  background-color: rgb(154, 214, 193);
+}
+
+.stack {
+  display: flex;
+  flex-direction: column-reverse;
+  border: 2px solid black;
+  border-top: none;
+  height: 80vh;
+  width: 10vh;
+}
+
+.queue {
+  display: flex;
+  border: 2px solid black;
+  border-right: none;
+  height: 10vh;
+  width: 80vh;
+  margin-bottom: 10px;
+}
+
+.priority {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(240, 239, 239);
+  margin: 2px;
+  /* border-radius: 0.25em; */
+}
+
+.highlight {
+  background-color: rgb(255,213,27);
+}

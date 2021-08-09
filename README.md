@@ -1,4 +1,3 @@
-
 # **WEB-APP/WEBSITE FOR VISUALIZATION OF GRAPH ALGORITHMS**
 
 
@@ -34,5 +33,6 @@ For displaying Data Structure: React Hooks like useState and useEffect.
 
 This project is a part of IITISoc 21 conducted by Cynaptics Club and Programming Club at IIT Indore which included various other Web dev and ML/AI projects done by IIT Indore students.
 The group which worked on this project is :- Vivek Bhushan, Indira Medepalli, Tushar Tiwari & Rajat Kushwaha.
+
 
 
