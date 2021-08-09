@@ -25,6 +25,14 @@
   margin-bottom: 10px;
 }
 
+.priority {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(240, 239, 239);
+  margin: 2px;
+  /* border-radius: 0.25em; */
+}
+
 .highlight {
   background-color: rgb(255,213,27);
 }

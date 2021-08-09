@@ -4,9 +4,11 @@ import Form from "./Form";
 import Graph from "./Graph";
 import DataStructureDFS from "./DataStructureDFS";
 import DataStructureBFS from "./DataStructureBFS";
+import DataStructureDijkstra from "./DataStructureDijkstra";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles.css";
 import cy from "./cy";
+
 
 function App() {
   const [submitted, setSubmitted] = useState(false);
@@ -28,7 +30,7 @@ function App() {
 
     setAlgorithm(algo.value);
 
-    console.log(algorithm);
+    // console.log(algorithm);
 
     //Validate Form
     let validateForm = function () {
@@ -86,6 +88,7 @@ function App() {
           {submitted && algorithm==="dfs" && <div className="col col-1"><DataStructureDFS /></div>}
         </div>
         {submitted && algorithm==="bfs" && <div className="row"><DataStructureBFS /></div>}
+        {submitted && algorithm==="dijkstra" && <div className="row"><DataStructureDijkstra /></div>}
       </div>
     </div>
   );

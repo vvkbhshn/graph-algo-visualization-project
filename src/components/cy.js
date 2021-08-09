@@ -2,6 +2,7 @@ import cytoscape from "cytoscape";
 import dagre from "cytoscape-dagre";
 import dfs from "../algo/dfs";
 import bfs from "../algo/bfs";
+import dijkstra from "../algo/dijkstra";
 
 cytoscape.use(dagre);
 let ds = { stack: [], queue: [] };
@@ -108,6 +109,7 @@ function cy(data) {
     edges.push(ID);
   }
   data.adj = adj;
+  // data.edgeWeight = edgeWeight;
 
   //Add style
   let styleArray = [
@@ -224,53 +226,91 @@ function cy(data) {
     setTimeout(highlightNextElement, 1000);
 
   } else if (chosenAlgo === "dijkstra") {
-    let path = [];
+    let {order, path} = dijkstra(data);
+    ds.queue = order;
+    console.log("order = ", order);
 
-    let runDijkstra = function () {
-      path = dijkstra.pathTo("#n" + endNode);
-      // console.log(path);
-      if (path.length > 0) {
-        i = 0;
-        highlightNextElement = function () {
-          if (i < path.length) {
-            // console.log(path[i].id());
-            path[i].addClass("shortest-path");
-            i++;
-            setTimeout(highlightNextElement, 500);
+    function shortestPath() {
+      let j=0;
+      let highlightNextElement = function() {
+        if(j<path.length) {
+          if(j===0) cy.$("#n" + path[j]).addClass("shortest-path");
+          else {
+            cy.$("#e" + path[j-1] + "-" + path[j]).addClass("shortest-path");
+            cy.$("#e" + path[j] + "-" + path[j-1]).addClass("shortest-path");
+            cy.$("#n" + path[j]).addClass("shortest-path");
           }
-        };
-        setTimeout(highlightNextElement, 500);
-      } else {
-        alert("No path found. Please try again.");
-        window.location.reload();
+          j++;
+          setTimeout(highlightNextElement, 1000);
+        }
       }
-    };
-
-    highlightNextElement = function () {
-      if (i < path.length) {
-        let elem = cy.$("#" + path[i]);
-        elem.flashClass("highlighted", 750);
-        i++;
-        if (i === path.length - 1) setTimeout(runDijkstra, 1000);
-        else setTimeout(highlightNextElement, 5);
-      }
-    };
-
-    let dijkstra = cy.elements().dijkstra({
-      root: "#n" + startNode,
-      // get a track of visited edges
-      weight: function (edge) {
-        path.push(edge.source().id(), edge.id(), edge.target().id());
-        return edgeWeight[edge.id()];
-      },
-      directed: isDirected === "directed" ? true : false
-    });
-    // console.log(path);
-    if (path.length > 0) setTimeout(highlightNextElement, 500);
-    else {
-      alert("No path found. Please try again.");
-      window.location.reload();
+      setTimeout(highlightNextElement, 1000);
     }
+
+    let i=0;
+    let highlightNextElement = function () {
+      if(i<order.length) {
+        let temp=order[i];
+        if(temp[0]==="highlight") cy.$("#n" + temp[1]).addClass("highlighted");
+        else if(temp[0]==="flash") cy.$("#n" + temp[1]).flashClass("shortest-path",500);
+        i++;
+        if(i===order.length) shortestPath();
+      }
+      setTimeout(highlightNextElement, 1000);
+    }
+    setTimeout(highlightNextElement, 1000);
+
+
+    
+
+
+    // let path = [];
+
+    // let runDijkstra = function () {
+    //   path = dijkstra.pathTo("#n" + endNode);
+    //   // console.log(path);
+    //   if (path.length > 0) {
+    //     i = 0;
+    //     highlightNextElement = function () {
+    //       if (i < path.length) {
+    //         // console.log(path[i].id());
+    //         path[i].addClass("shortest-path");
+    //         i++;
+    //         setTimeout(highlightNextElement, 500);
+    //       }
+    //     };
+    //     setTimeout(highlightNextElement, 500);
+    //   } else {
+    //     alert("No path found. Please try again.");
+    //     window.location.reload();
+    //   }
+    // };
+
+    // highlightNextElement = function () {
+    //   if (i < path.length) {
+    //     let elem = cy.$("#" + path[i]);
+    //     elem.flashClass("highlighted", 750);
+    //     i++;
+    //     if (i === path.length - 1) setTimeout(runDijkstra, 1000);
+    //     else setTimeout(highlightNextElement, 5);
+    //   }
+    // };
+
+    // let dijkstra = cy.elements().dijkstra({
+    //   root: "#n" + startNode,
+    //   // get a track of visited edges
+    //   weight: function (edge) {
+    //     path.push(edge.source().id(), edge.id(), edge.target().id());
+    //     return edgeWeight[edge.id()];
+    //   },
+    //   directed: isDirected === "directed" ? true : false
+    // });
+    // // console.log(path);
+    // if (path.length > 0) setTimeout(highlightNextElement, 500);
+    // else {
+    //   alert("No path found. Please try again.");
+    //   window.location.reload();
+    // }
   } else if (chosenAlgo === "bellman-ford") {
     let path = [];
 
