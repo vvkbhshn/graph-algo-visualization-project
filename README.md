@@ -5,7 +5,7 @@ This is an intuitive web app which helps in visualizing various graph algorithms
 
 The website can be opened through any web browser and the user can understand the visual working of various algorithms. The visualisation supports upto 30 nodes and 6 different algorithms which are = DFS, BFS, Dijkstra, Bellman Ford, A*, Floyd Warshall. The user can choose whether they want to use directed or undirected edges and can add weights if they want to. One can also choose the end node for the path finding algorithm. We have also implemented Data Structure visualization for DFS, BFS and Dijkstra algorithms.
 
-The link for website is https://bd9e9.csb.app/ 
+The link for website is https://graph-algo-visualizer.netlify.app/
 
 At 1st the user needs to enter the number of nodes to be visualized. 
 
